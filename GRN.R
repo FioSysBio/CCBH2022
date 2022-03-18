@@ -1,6 +1,6 @@
 ############################################################################
 #
-# Estudy of the basic topology of the Pseudomonas aeruginosa Gene Regulation Network
+# Study of the basic topology of the Pseudomonas aeruginosa Gene Regulation Network
 #
 ############################################################################
 
