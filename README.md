@@ -2,6 +2,6 @@
 
 In this repository are:
 
-- the python code to identify the RBH,
-- the CCBH-2022 in csv format,
-- the R code for its structural analysis.
+- the python code to identify the RBH (RBH.py),
+- the CCBH-2022 in csv format (GRN.csv),
+- the R code for its structural analysis (GRN.R).
