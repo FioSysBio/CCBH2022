@@ -16,7 +16,7 @@ dados <-
   read_csv2("GRN.csv")
 
 
-# Data pre-processing
+# Pre-processing data
 c1 <- 
   dados$`Regulator (TF or sigma)` %>%
   strsplit(" ") %>%
@@ -63,7 +63,7 @@ arestas <-
   filter(!is.na(`Target gene`))
 
 
-##### Finalmente: REDE COM IGRAPH
+# GRN with Igraph
 
 Rede <- graph_from_data_frame(d = arestas,
                               directed = TRUE
@@ -101,7 +101,7 @@ sum(V(Rede)$color == "lightblue")
 
 scientific(graph.density(Rede, loops=TRUE))
 
-###
+
 p.kin <- degree_distribution(Rede, mode="in")
 p.kin.na <- ifelse(p.kin == 0,NA,p.kin)
 min.kin <- min(degree(Rede, mode="in"))
@@ -127,18 +127,18 @@ plot(x.in, y.in,
      xlab= "log(k-in)", ylab= "log P(k-in)")
 plotrix::ablineclip(log.A.in, -gama.in, x1= 0,x2=log10(max.kin))
 
-###
+
 # output
 p.kout <- degree_distribution(Rede, mode="out")
 p.kout.na <- ifelse(p.kout == 0,NA,p.kout)
 min.kout <- min(degree(Rede, mode="out"))
 max.kout <- max(degree(Rede, mode="out"))
-#
+
 plot(min.kout:max.kout, p.kout.na, 
      xlab= "k-out (grau output)", ylab= "P(k-out)", type="h")
 title(sub="Figure 3: Distribution of degree k-out", 
       cex.sub = 0.75, font.sub = 3, col.sub = "black")
-#
+
 # Axis y in log10
 plot(min.kout:max.kout, p.kout.na, 
      xlab= "k-out (Degree output)", ylab= "P(k-out)", type="h",log="y")
@@ -146,7 +146,7 @@ title(sub="Figure 4: Distribution of Degree k-out",
       cex.sub = 0.75, font.sub = 3, col.sub = "black")
 
 
-### Power Law ajusts kout
+# Power Law ajusts kout
 x.out <- log10(min.kout:max.kout)
 y.out <- log10(p.kout.na)
 data.out <- 
@@ -165,43 +165,43 @@ plotrix::ablineclip(log.A.out, -gama.out, x1= 0,x2=log10(max.kout))
 
 
 
-# clustering coefficient
+# Clustering coefficient
 
 
-# global
+# Global
 CoeffCluster.global <- scientific(transitivity(Rede,type="globalundirected"))
 
-# mean
+# Mean
 CoeffCluster.medio <- scientific(transitivity(Rede,type="average"))
 
-# local
+# Local
 CoeffCluster.i <- transitivity(Rede,type="localundirected",
                                isolates = "NaN",
                                vids = NULL,
                                weights = NULL)
 
-# total distribution
+# Total distribution
 hist(CoeffCluster.i,
      xlab= "coeficiente de clusterização local", ylab= "frequência", main=NULL)
 title(sub="Figura 6: Distribuição Total de Coef. Clusterização", 
       cex.sub = 0.75, font.sub = 3, col.sub = "black")
 
-# proportion of vertices with zero coef
+# Proportion of vertices with zero coef
 propCzero <-table(CoeffCluster.i)[1]/nrow(vert)
 
 
-# proportion of vertices with coef 1:
+# Proportion of vertices with coef 1:
 propChum <-table(CoeffCluster.i)[nrow(table(CoeffCluster.i))]/nrow(vert)
 
 
-# distribution without nulls and without 1
+# Distribution without nulls and without 1
 hist(ifelse(CoeffCluster.i ==0 | CoeffCluster.i ==1, NA, CoeffCluster.i),
      xlab= "coeficiente de clusterização local", ylab= "frequência", main=NULL)
 title(sub="Figura 2: Distribuição Parcial de Coef. Clusterização", 
       cex.sub = 0.75, font.sub = 3, col.sub = "black")
 
 ################
-# Scatter plot between clustering coefficient by degree
+# Scatter plot : clustering coefficient by degree
 k.i <- degree(Rede,mode="all")
 
 C.k.i <- CoeffCluster.i 
@@ -214,7 +214,7 @@ title(sub="Figura 7: Coef. Clusterização em função do grau k dos vértices "
 # k =0 ou k=1 absent 
 C.k.i.filtrado <- transitivity(Rede,type="localundirected",
                                isolates = "NaN")
-#
+
 plot(k.i, C.k.i.filtrado,
      xlab="k (grau total)", ylab= "C(k) (coef. cluster. por grau k)")
 title(sub="Figura 7: Coef. Clusterização em função do grau k dos vértices ", 
@@ -222,15 +222,15 @@ title(sub="Figura 7: Coef. Clusterização em função do grau k dos vértices "
 
 ##################################
 
-# connectivity
+# Connectivity
 
-# clusters
+# Clusters
 count_components(Rede)
 
 
 components(Rede)$csize
 
-# histogram
+# Histogram
 plot(components(Rede)$csize)
 
 reguladores.por.grupo <- c()
@@ -257,13 +257,13 @@ plot(probab.n.reguladores.por.grupo,
 
 #####################################################
 
-# Estudo de atividade dominante: ativacao ou desativação?
+# Dominant activity study: activation or non-activation
 
 tab.modoRegula <- 
   table(arestas$`mode of regulation`)
 tab.modoRegula <- tab.modoRegula[order(tab.modoRegula)]
 
-# Dominant activity study: activation or non-activation
+
 #
 auto_regul <- 
   filter(arestas, `Regulator (TF)` == `Target gene`)
@@ -280,13 +280,13 @@ diameter(Rede,directed = TRUE,unconnected = TRUE)
 diameter(Rede,directed = FALSE,unconnected = TRUE)
 
 
-### the average path size:
+### The average path size:
 mean_distance(Rede, directed = TRUE, unconnected = TRUE)
 mean_distance(Rede, directed = FALSE, unconnected = TRUE)
 
 
 ####################
-# Motifs de 3 vertices
+# 3 vertices motifs 
 
 
 triad_census(Rede)
@@ -346,7 +346,7 @@ hubs.em.ordem.dec[1:30]
 # top 10 (Kleinberg's authority centrality scores) 
 authority.em.ordem.dec[1:10]
 
-## usando  k-out
+## using  k-out
 k.hubs.em.ordem.dec <- degree(Rede, mode="out")[order(degree(Rede, mode="out"),
                                                       decreasing = TRUE)]
 
