@@ -1,4 +1,4 @@
-# GRN_Paeruginosa
+# Pseudomonas aeruginosa CCBH4851 Gene Regulatory Network
 
 In this repository are:
 
