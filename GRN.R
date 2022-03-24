@@ -107,7 +107,7 @@ p.kin.na <- ifelse(p.kin == 0,NA,p.kin)
 min.kin <- min(degree(Rede, mode="in"))
 max.kin <-  max(degree(Rede, mode="in"))
 plot(min.kin:max.kin, p.kin.na,
-     xlab= "k-in (grau input)", ylab= "P(k-in)", type="h")
+     xlab= "k-in (degree input)", ylab= "P(k-in)", type="h")
 title(sub="Figure 3: Distribution of Degree k-in", 
       cex.sub = 0.75, font.sub = 3, col.sub = "black")
 
@@ -135,13 +135,13 @@ min.kout <- min(degree(Rede, mode="out"))
 max.kout <- max(degree(Rede, mode="out"))
 
 plot(min.kout:max.kout, p.kout.na, 
-     xlab= "k-out (grau output)", ylab= "P(k-out)", type="h")
+     xlab= "k-out (degree output)", ylab= "P(k-out)", type="h")
 title(sub="Figure 3: Distribution of degree k-out", 
       cex.sub = 0.75, font.sub = 3, col.sub = "black")
 
 # Axis y in log10
 plot(min.kout:max.kout, p.kout.na, 
-     xlab= "k-out (Degree output)", ylab= "P(k-out)", type="h",log="y")
+     xlab= "k-out (degree output)", ylab= "P(k-out)", type="h",log="y")
 title(sub="Figure 4: Distribution of Degree k-out", 
       cex.sub = 0.75, font.sub = 3, col.sub = "black")
 
@@ -159,7 +159,7 @@ gama.out <- -ajuste.out$coefficients[2]
 #
 plot(x.out, y.out,
      xlab= "log(k-out)", ylab= "log P(k-out)")
-title(sub="Figura 5: Distribuição de Grau k-out log-log", 
+title(sub="Figure 5: Distribution of Degree k-out log-log", 
       cex.sub = 0.75, font.sub = 3, col.sub = "black")
 plotrix::ablineclip(log.A.out, -gama.out, x1= 0,x2=log10(max.kout))
 
@@ -182,8 +182,8 @@ CoeffCluster.i <- transitivity(Rede,type="localundirected",
 
 # Total distribution
 hist(CoeffCluster.i,
-     xlab= "coeficiente de clusterização local", ylab= "frequência", main=NULL)
-title(sub="Figura 6: Distribuição Total de Coef. Clusterização", 
+     xlab= "Local Clustering Coefficient", ylab= "Frequency", main=NULL)
+title(sub="Figure 6: Distribution of Total Clustering Coefficient", 
       cex.sub = 0.75, font.sub = 3, col.sub = "black")
 
 # Proportion of vertices with zero coef
@@ -196,8 +196,8 @@ propChum <-table(CoeffCluster.i)[nrow(table(CoeffCluster.i))]/nrow(vert)
 
 # Distribution without nulls and without 1
 hist(ifelse(CoeffCluster.i ==0 | CoeffCluster.i ==1, NA, CoeffCluster.i),
-     xlab= "coeficiente de clusterização local", ylab= "frequência", main=NULL)
-title(sub="Figura 2: Distribuição Parcial de Coef. Clusterização", 
+     xlab= "Local Clustering Coefficient", ylab= "Frequency", main=NULL)
+title(sub="Figure 2: Distribution of Partial Clustering Coefficient", 
       cex.sub = 0.75, font.sub = 3, col.sub = "black")
 
 ################
@@ -207,8 +207,8 @@ k.i <- degree(Rede,mode="all")
 C.k.i <- CoeffCluster.i 
 #
 plot(k.i, C.k.i,
-     xlab="k (grau total)", ylab= "C(k) (coef. cluster. por grau k)")
-title(sub="Figura 7: Coef. Clusterização em função do grau k dos vértices ", 
+     xlab="k (degree total)", ylab= "C(k)")
+title(sub="Figure 7: Clustering Coefficient by Degree", 
       cex.sub = 0.75, font.sub = 3, col.sub = "black")
 
 # k =0 ou k=1 absent 
@@ -216,8 +216,8 @@ C.k.i.filtrado <- transitivity(Rede,type="localundirected",
                                isolates = "NaN")
 
 plot(k.i, C.k.i.filtrado,
-     xlab="k (grau total)", ylab= "C(k) (coef. cluster. por grau k)")
-title(sub="Figura 7: Coef. Clusterização em função do grau k dos vértices ", 
+     xlab="k (degree total)", ylab= "C(k)")
+title(sub="Figure 7: Clustering Coefficient by Degree", 
       cex.sub = 0.75, font.sub = 3, col.sub = "black")
 
 ##################################
